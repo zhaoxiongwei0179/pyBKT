@@ -23,13 +23,14 @@ def auc(flat_true_values, pred_values):
     # multiprior handling, remove phantom nondata
     if len(flat_true_values) == 0:
         return np.nan
-    i = 0
-    while i < len(flat_true_values):
+    
+    del_indices = []
+    for i in range(len(flat_true_values)):
         if (flat_true_values[i] != 1 and flat_true_values[i] != 0) or (pred_values[i] < 0 or pred_values[i] > 1):
-            flat_true_values = np.delete(flat_true_values, i)
-            pred_values = np.delete(pred_values, i)
-            i -= 1
-        i += 1
+            del_indices.append(i)
+    flat_true_values = np.delete(flat_true_values, del_indices)
+    pred_values = np.delete(pred_values, del_indices)
+    
     if len(set(flat_true_values)) == 1:
         return np.nan
 
